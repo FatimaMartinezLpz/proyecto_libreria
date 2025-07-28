@@ -15,11 +15,11 @@ Guzmán Jiménez Alary
 Proyecto de aplicación web para una librería en línea, donde usuarios pueden buscar y comprar libros, mientras que administradores gestionan el inventario, usuarios y pedidos. La aplicación está dividida en:
 
 Frontend Angular: Interfaz de usuario interactiva, búsqueda, carrito y checkout.
-
 Backend Laravel: API RESTful para gestión, autenticación y control de datos.
+
 ---
 
-## Estructura del proyecto
+## Estructura general del proyecto
 
 ![Inicio](src/assets/capturas/inicio.png)
 
