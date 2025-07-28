@@ -256,5 +256,21 @@ id, title, author, description, category, price, stock, cover_url
 id, name, email, password, role
 
 
+ **tabla cart_items** 
+
+ id, user_id, book_id, quantity, unit_price
+
+
+  **tabla orders** 
+
+  id, user_id, total, status, shipping_address, payment_method
+
+
+   **tabla order_items** 
+
+   id, order_id, book_id, quantity, unit_price
+
+   
+
 
  
