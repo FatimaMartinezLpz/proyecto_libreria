@@ -1,4 +1,4 @@
-## P📚 Proyecto Mi Librería - Angular + Laravel
+## 📚 Proyecto Mi Librería - Angular + Laravel
 
 proyecto generado utilizando [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
 
