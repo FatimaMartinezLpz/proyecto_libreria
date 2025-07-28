@@ -1,59 +1,124 @@
-# RecetaApp
+## Proyecto Angular: Gestión de Librería
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
+proyecto generado utilizando [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
 
-## Development server
 
-To start a local development server, run:
+## Integrantes del equipo
 
-```bash
-ng serve
-```
+Martínez López Fátima
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Guzmán Jiménez Alary
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Descripción
 
-```bash
-ng generate component component-name
-```
+Esta aplicación web está diseñada para una librería en línea donde usuarios normales (clientes) pueden navegar, buscar y comprar libros fácilmente, y administradores pueden gestionar el catálogo y las operaciones internas. La interfaz es intuitiva, moderna y responsiva para ofrecer la mejor experiencia de usuario.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## Funcionalidades para Usuario Normal (Cliente)
 
-## Building
+- **Navegación sencilla y clara:**  
+  El usuario puede navegar por la librería con un menú de categorías desplegables, barra de búsqueda con sugerencias en tiempo real y acceso rápido a su carrito de compras.
 
-To build the project run:
+- **Búsqueda avanzada:**  
+  Búsqueda por título, autor o palabra clave, con resultados instantáneos que muestran portada, autor, precio y calificación.
 
-```bash
-ng build
-```
+- **Visualización de libros:**  
+  Los libros se presentan en tarjetas con imagen, título, autor, precio, calificación y botón para agregar al carrito.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- **Carrito de compras flotante:**  
+  El usuario puede agregar libros al carrito, modificar cantidades, ver el total actualizado y proceder al pago. Además, se muestra un mensaje de envío gratuito si el monto supera un límite.
 
-## Running unit tests
+- **Cuenta de usuario:**  
+  Inicio de sesión para acceder a información personalizada, ver su nombre y correo, y cerrar sesión de forma segura.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- **Carruseles de destacados y últimos lanzamientos:**  
+  Se exhiben libros recomendados y novedades mediante carruseles con navegación sencilla.
 
-```bash
-ng test
-```
+- **Detalle de libro:**  
+  Página individual con información completa del libro, descripción, disponibilidad, precio y opción para agregar al carrito.
 
-## Running end-to-end tests
+- **Checkout y pago:**  
+  Formulario para capturar datos de envío y método de pago, resumen del pedido con precios detallados y confirmación.
 
-For end-to-end (e2e) testing, run:
+- **Mensajes y estados claros:**  
+  Indicadores de carga, mensajes amigables cuando no hay resultados o stock agotado.
 
-```bash
-ng e2e
-```
+---
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Funcionalidades para Administrador
 
-## Additional Resources
+- **Gestión de catálogo:**  
+  Creación, edición y eliminación de libros, incluyendo detalles como título, autor, categoría, precio, stock y descripción.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **Control de inventario:**  
+  Visualización y actualización del stock disponible para cada libro.
+
+- **Gestión de usuarios:**  
+  Administración de cuentas de clientes y otros administradores, control de acceso y roles.
+
+- **Visualización de pedidos:**  
+  Consulta y seguimiento de pedidos realizados por los clientes, incluyendo estado y detalles.
+
+- **Reportes y estadísticas:**  
+  Análisis de ventas, libros más vendidos, y otras métricas para la toma de decisiones.
+
+- **Configuración de la tienda:**  
+  Ajustes generales como categorías, políticas de envío, métodos de pago y otras preferencias.
+
+---
+
+## Estructura General del Proyecto
+
+- **Componentes principales:**  
+  - `home.component`: Página principal con carruseles y listados.  
+  - `libro-detalle.component`: Vista detallada de un libro.  
+  - `search-results.component`: Resultados de búsqueda y filtros.  
+  - `checkout.component`: Proceso de finalización de compra.  
+  - `carrito-flotante.component`: Bolsa de compras accesible desde cualquier página.
+
+- **Servicios:**  
+  - Gestión de libros, usuarios, carrito y pedidos.  
+  - Comunicación con backend para datos persistentes.
+
+- **Rutas:**  
+  Navegación entre páginas principales y funcionales.
+
+- **Estilos y diseño:**  
+  Uso de CSS moderno con diseño responsivo y experiencia de usuario optimizada.
+
+---
+
+## Tecnologías usadas
+
+- Angular (TypeScript, HTML, CSS)  
+- RxJS para manejo reactivo de datos  
+- Formularios reactivos para validación  
+- Pipes para formatos de moneda y números  
+- Directivas estructurales (`*ngIf`, `*ngFor`) para control de vistas  
+- Servicios e inyección de dependencias para lógica compartida
+
+---
+
+## Cómo usar esta aplicación
+
+1. Clonar el repositorio  
+2. Ejecutar `npm install` para instalar dependencias  
+3. Ejecutar `ng serve` para correr la aplicación en modo desarrollo  
+4. Abrir `http://localhost:4200` en el navegador  
+5. Navegar como usuario normal para explorar y comprar libros  
+6. Iniciar sesión con cuenta de administrador para gestionar la tienda
+
+---
+
+## Notas finales
+
+Esta aplicación está diseñada para brindar una experiencia completa tanto a clientes como a administradores, con funcionalidades pensadas para cubrir el ciclo completo de compra y gestión en una librería online. La interfaz es intuitiva para el usuario final, mientras que las herramientas administrativas permiten un control eficiente y seguro del sistema.
+
+---
+
+## Contacto
+
+Para más información, dudas o sugerencias, puedes contactarnos en: contacto@milibreria.com
+
