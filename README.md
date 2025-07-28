@@ -101,7 +101,7 @@ Panel de administración para usuarios con rol admin (desde frontend y backend).
 
 ---
 
-## Estructura General del Proyecto
+## Estructura de Angular
 
 - **Componentes principales:**  
   - `home.component`: Página principal con carruseles y listados.  
@@ -210,3 +210,51 @@ Diseño adaptable para móviles y tablets.
 ![Responsivo](src/assets/capturas/responsivo.png)
 
 ---
+
+## Backend Laravel
+
+ **Características principales**  
+
+API REST para gestión completa de librería.
+
+Control de roles (admin, editor, user).
+
+Registro y autenticación con Laravel Sanctum (tokens API).
+
+CRUD para libros, usuarios, carritos y pedidos.
+
+Control de stock automático.
+
+Soporte para búsquedas y filtros.
+
+
+---
+
+## Roles y seguridad
+
+ **admin**  
+
+Control total de libros, usuarios y pedidos
+
+
+ **user** 
+
+ Compra, visualización y carrito
+
+
+---
+
+## Estructura base de datos
+
+ **tabla books**  
+
+id, title, author, description, category, price, stock, cover_url
+
+
+ **tabla user** 
+
+id, name, email, password, role
+
+
+
+ 
