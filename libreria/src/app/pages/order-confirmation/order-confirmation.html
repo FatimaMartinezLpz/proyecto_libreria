@@ -1,0 +1,44 @@
+<div class="confirmation-container">
+  <div class="confirmation-card" *ngIf="order">
+    <div class="confirmation-header">
+      <h2>¡Gracias por tu compra!</h2>
+      <p>Tu pedido ha sido procesado exitosamente.</p>
+    </div>
+
+    <div class="confirmation-body">
+      <div class="order-info">
+        <h3>Resumen del Pedido</h3>
+        <p><strong>Número de Pedido:</strong> #{{ order.id }}</p>
+        <p><strong>Fecha:</strong> {{ order.created_at | date:'medium' }}</p>
+        <p><strong>Total:</strong> ${{ order.total | number }}</p>
+        <p><strong>Método de Pago:</strong> {{ getPaymentMethodName(order.payment_method) }}</p>
+      </div>
+
+      <div class="order-items">
+        <h3>Productos</h3>
+        <div class="item" *ngFor="let item of order.items">
+          <img [src]="item.book.cover_url" [alt]="item.book.title">
+          <div class="item-details">
+            <h4>{{ item.book.title }}</h4>
+            <p>Cantidad: {{ item.quantity }}</p>
+            <p>Precio: ${{ item.total_price | number }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="shipping-info">
+        <h3>Dirección de Envío</h3>
+        <p>{{ order.shipping_address }}</p>
+      </div>
+    </div>
+
+    <div class="confirmation-footer">
+      <button class="btn-continue" (click)="goToHome()">Continuar Comprando</button>
+      <button class="btn-track" routerLink="/mis-pedidos">Ver Mis Pedidos</button>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="!order">
+    <p>Cargando información del pedido...</p>
+  </div>
+</div>

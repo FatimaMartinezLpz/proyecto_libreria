@@ -1,0 +1,29 @@
+<!-- search-results.component.html -->
+<div class="search-results-page">
+    <div class="search-header">
+        <h1>Resultados de búsqueda para "{{query}}"</h1>
+        <p *ngIf="libros.length > 0">{{libros.length}} resultados encontrados</p>
+        <p *ngIf="libros.length === 0 && !isLoading">No se encontraron resultados</p>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">Cargando...</div>
+
+    <div class="results-grid">
+        <div class="libro-card" *ngFor="let libro of libros">
+            <div class="libro-imagen-container">
+                <img [src]="libro.cover_url" [alt]="libro.title" class="libro-imagen">
+            </div>
+            <div class="libro-info">
+                <h3>{{ libro.title }}</h3>
+                <p class="autor">{{ libro.author }}</p>
+                <div class="rating">
+                    <span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span>
+                </div>
+                <p class="precio">${{ libro.price | number }}</p>
+                <button class="btn-agregar" (click)="agregarAlCarrito(libro)">
+                    <span class="icono-carrito">🛒</span> Agregar al carrito
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

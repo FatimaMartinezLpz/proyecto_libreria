@@ -1,0 +1,66 @@
+/* search-results.component.css */
+.search-results-page {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.search-header {
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.search-header h1 {
+    font-size: 24px;
+    color: var(--color-primary);
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+}
+
+.loading {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+    color: var(--color-text-light);
+}
+
+/* Reutilizamos estilos de libro-card del home */
+.libro-card {
+    background: var(--color-card);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+.libro-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.libro-imagen-container {
+    height: 350px;
+    overflow: hidden;
+}
+
+.libro-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.libro-card:hover .libro-imagen {
+    transform: scale(1.05);
+}
+
+.libro-info {
+    padding: 20px;
+}
+
+/* ... (otros estilos reutilizados del home) ... */

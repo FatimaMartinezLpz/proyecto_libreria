@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Librería</title>
+  <link rel="stylesheet" href="home.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Header con efecto sticky -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="assets/img/logo.png" alt="Logo Mi Librería" class="logo-img">
+      <span class="nombre-libreria">Mi Librería</span>
+    </div>
+
+    <div class="header-right">
+      <div class="accion-icono carrito" (click)="toggleBolsa()">Carrito 🛒({{ cantidadEnCarrito }})</div>
+    
+
+    <div class="cuenta-container" (click)="$event.stopPropagation()">
+      <div class="usuario-avatar" (click)="toggleCuenta($event)">
+        <span class="avatar-inicial">{{ obtenerInicialUsuario() }}</span>
+        <span class="nombre-usuario">{{ usuario?.nombre || 'Mi cuenta' }}</span>
+      </div>
+      <div class="cuenta-dropdown" *ngIf="cuentaAbierta">
+        <div class="cuenta-info">
+          <p class="cuenta-nombre">{{ usuario?.nombre || 'Invitado' }}</p>
+          <p class="cuenta-email">{{ usuario?.email || 'Inicia sesión' }}</p>
+        </div>
+        <div class="cuenta-opciones">
+          <a href="#">Mis pedidos</a>
+          <button class="btn-cerrar-sesion" (click)="cerrarSesion($event)">Cerrar sesión</button>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  </header>
+
+  <!-- BARRA DE NAVEGACIÓN CON CATEGORÍAS DESPLEGABLES (sticky) -->
+  <!-- BARRA DE NAVEGACIÓN CON CATEGORÍAS DESPLEGABLES (sticky) -->
+  <nav class="nav-categorias">
+    <div class="search-container">
+      <input type="text" [(ngModel)]="busqueda" (input)="buscarLibros()" placeholder="Buscar libros..."
+        class="search-input">
+      <button (click)="realizarBusqueda()" class="search-button">🔍</button>
+      <div class="search-results" *ngIf="resultadosBusqueda.length > 0 && busqueda">
+        <div class="result-item" *ngFor="let libro of resultadosBusqueda" (click)="verDetalleLibro(libro)">
+          <img [src]="libro.cover_url" alt="Portada" class="result-image">
+          <div class="result-info">
+            <h4>{{libro.title}}</h4>
+            <p>{{libro.author}}</p>
+            <span class="result-price">${{libro.price | number}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dropdown-categoria" *ngFor="let categoria of categoriasPrincipales">
+      <button class="dropbtn" (click)="toggleDropdown(categoria, $event)" [class.active]="categoria.seleccionada">
+        {{ categoria.nombre }}
+      </button>
+      <div class="dropdown-content" *ngIf="categoria.abierto">
+        <a *ngFor="let subcat of categoria.subcategorias" href="#"
+          (click)="filtrarPorSubcategoria(subcat); $event.preventDefault()">
+          {{ subcat }}
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <!-- CARRUSEL -->
+    <div class="carrusel-gandi">
+      <div class="carrusel-container" [style.transform]="'translateX(' + (-imagenActual * 100) + '%)'">
+        <div class="carrusel-slide" *ngFor="let imagen of carruselImagenes">
+          <img [src]="imagen.url" [alt]="imagen.alt">
+          <div class="carrusel-text">
+            <h1>{{ imagen.titulo }}</h1>
+            <p>{{ imagen.descripcion }}</p>
+            <button class="btn-comprar">COMPRAR</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="carrusel-prev" (click)="anterior()">‹</button>
+      <button class="carrusel-next" (click)="siguiente()">›</button>
+
+      <div class="carrusel-dots">
+        <span *ngFor="let imagen of carruselImagenes; let i = index" [class.active]="i === imagenActual"
+          (click)="cambiarImagen(i)"></span>
+      </div>
+    </div>
+    <!-- RESULTADOS DE BÚSQUEDA -->
+    <div class="resultados-busqueda-container" *ngIf="mostrandoResultadosBusqueda">
+      <!-- Título condicional -->
+      <h2 *ngIf="busqueda">Resultados de búsqueda para "{{ busqueda }}"</h2>
+      <h2 *ngIf="!busqueda">Libros en categoría {{filtroActivo}}</h2>
+
+      <!-- Cuando hay búsqueda textual -->
+      <div *ngIf="busqueda" class="libros-grid">
+        <div class="libro-card" *ngFor="let libro of librosFiltrados; trackBy: trackByLibroId">
+          <div class="libro-imagen-container">
+            <img [src]="libro.cover_url || 'assets/img/default-book.jpg'" [alt]="libro.title" class="libro-imagen">
+          </div>
+          <div class="libro-info">
+            <h3>{{ libro.title }}</h3>
+            <p class="autor">{{ libro.author }}</p>
+            <div class="rating">
+              <span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span>
+            </div>
+            <p class="precio">${{ libro.price | number }}</p>
+            <button class="btn-agregar" (click)="agregarAlCarrito(libro)">Agregar al carrito</button>
+          </div>
+        </div>
+
+        <div *ngIf="librosFiltrados.length === 0" class="sin-resultados">
+          No se encontraron resultados para "{{ busqueda }}"
+          <button class="btn-limpiar" (click)="limpiarBusqueda()">Mostrar todos los libros</button>
+        </div>
+      </div>
+
+      <!-- Cuando es filtrado por categoría -->
+      <div *ngIf="!busqueda">
+        <!-- Mostrar por categorías principales -->
+        <div *ngFor="let cat of categoriasPrincipales">
+          <div *ngIf="cat.seleccionada" class="categoria-grupo">
+            <h3 class="titulo-categoria">{{ cat.nombre }}</h3>
+
+            <!-- Mostrar todas las subcategorías -->
+            <div *ngFor="let subcat of cat.subcategorias" class="subcategoria-grupo">
+              <h4 class="titulo-subcategoria">{{ subcat }}</h4>
+              <div class="libros-grid">
+                <div class="libro-card" *ngFor="let libro of librosFiltrados; trackBy: trackByLibroId">
+                  <div class="libro-imagen-container">
+                    <img [src]="libro.cover_url || 'assets/img/default-book.jpg'" [alt]="libro.title"
+                      class="libro-imagen">
+                  </div>
+                  <div class="libro-info">
+                    <h3>{{ libro.title }}</h3>
+                    <p class="autor">{{ libro.author }}</p>
+                    <div class="rating">
+                      <span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span>
+                    </div>
+                    <p class="precio">${{ libro.price | number }}</p>
+                    <button class="btn-agregar" (click)="agregarAlCarrito(libro)">Agregar al carrito</button>
+                  </div>
+                </div>
+
+                <div *ngIf="librosFiltrados.length === 0" class="sin-resultados">
+                  No se encontraron libros en esta categoría
+                  <button class="btn-limpiar" (click)="limpiarFiltros()">Mostrar todos los libros</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <!-- SECCIÓN DE LIBROS DESTACADOS -->
+    <section class="destacados" *ngIf="!mostrandoResultadosBusqueda">
+      <h2>De lo que todos están hablando</h2>
+      <div class="full-width-container">
+        <div class="libros-carrusel-wrapper">
+          <button class="carrusel-flecha flecha-libro-prev" (click)="moverCarrusel('prev', 'destacados1')"
+            aria-label="Libros anteriores" title="Ver libros anteriores">
+            ‹
+          </button>
+          <div class="libros-carrusel">
+            <div class="libros-track" #destacados1>
+              <div class="libro-card" *ngFor="let libro of librosDestacados">
+                <div class="libro-imagen-container">
+                  <img [src]="libro.cover_url" [alt]="libro.title" class="libro-imagen">
+                </div>
+                <div class="libro-info">
+                  <h3>{{ libro.title }}</h3>
+                  <p class="autor">{{ libro.author }}</p>
+                  <div class="rating">
+                    <span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span>
+                  </div>
+                  <p class="precio">${{ libro.price | number }}</p>
+                  <button class="btn-agregar" (click)="agregarAlCarrito(libro)">Agregar al carrito</button>
+                </div>
+              </div>
+              <!-- Duplicar libros para efecto infinito -->
+              <div class="libro-card" *ngFor="let libro of librosDestacados">
+                <div class="libro-imagen-container">
+                  <img [src]="libro.cover_url" [alt]="libro.title" class="libro-imagen">
+                </div>
+                <div class="libro-info">
+                  <h3>{{ libro.title }}</h3>
+                  <p class="autor">{{ libro.author }}</p>
+                  <div class="rating">
+                    <span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span>
+                  </div>
+                  <p class="precio">${{ libro.price | number }}</p>
+                  <button class="btn-agregar" (click)="agregarAlCarrito(libro)">Agregar al carrito</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="carrusel-flecha flecha-libro-next" (click)="moverCarrusel('next', 'destacados1')">›</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN DE ÚLTIMOS LANZAMIENTOS -->
+    <section class="destacados" *ngIf="!mostrandoResultadosBusqueda">
+      <h2>Últimos Lanzamientos</h2>
+      <div class="full-width-container">
+        <div class="libros-carrusel-wrapper">
+          <button class="carrusel-flecha flecha-libro-prev" (click)="moverCarrusel('prev', 'destacados2')"
+            aria-label="Siguientes libros" title="Ver siguientes libros">‹</button>
+          <div class="libros-carrusel">
+            <div class="libros-track" #destacados2>
+              <div class="libro-card" *ngFor="let libro of ultimosLanzamientos">
+                <div class="libro-imagen-container">
+                  <img [src]="libro.cover_url" [alt]="libro.title" class="libro-imagen">
+                </div>
+                <div class="libro-info">
+                  <h3>{{ libro.title }}</h3>
+                  <p class="autor">{{ libro.author }}</p>
+                  <div class="rating">
+                    <span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span>
+                  </div>
+                  <p class="precio">${{ libro.price | number }}</p>
+                  <button class="btn-agregar" (click)="agregarAlCarrito(libro)">
+                    <span class="icono-carrito">🛒</span> Agregar al carrito
+                  </button>
+                </div>
+              </div>
+              <!-- Duplicar libros para efecto infinito -->
+              <div class="libro-card" *ngFor="let libro of ultimosLanzamientos">
+                <div class="libro-imagen-container">
+                  <img [src]="libro.cover_url" [alt]="libro.title" class="libro-imagen">
+                </div>
+                <div class="libro-info">
+                  <h3>{{ libro.title }}</h3>
+                  <p class="autor">{{ libro.author }}</p>
+                  <div class="rating">
+                    <span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span>
+                  </div>
+                  <p class="precio">${{ libro.price | number }}</p>
+                  <button class="btn-agregar" (click)="agregarAlCarrito(libro)">
+                    <span class="icono-carrito">🛒</span> Agregar al carrito
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="carrusel-flecha flecha-libro-next" (click)="moverCarrusel('next', 'destacados2')">›</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- BOLSA DE COMPRAS FLOTANTE -->
+  <div class="bolsa-flotante" [class.mostrar]="mostrarBolsa">
+    <div class="bolsa-contenido">
+      <div class="bolsa-header">
+        <h3 class="bolsa-titulo">Bolsa</h3>
+        <button class="btn-cerrar" (click)="toggleBolsa()">×</button>
+      </div>
+
+      <div class="bolsa-body">
+        <div class="envio-gratis" *ngIf="calcularTotal() >= 500">
+          ¡Felicidades! Tu envío es GRATIS
+        </div>
+
+        <div class="bolsa-item" *ngFor="let item of carrito">
+          <img [src]="item.cover_url" [alt]="item.title" class="bolsa-item-img">
+          <div class="bolsa-item-info">
+            <h4 class="bolsa-item-titulo">{{ item.title }}</h4>
+            <p class="bolsa-item-detalle">{{ item.author }}</p>
+
+            <div class="bolsa-item-cantidad">
+              <button (click)="disminuirCantidad(item)">-</button>
+              <span>{{ item.cantidad }}</span>
+              <button (click)="aumentarCantidad(item)">+</button>
+            </div>
+          </div>
+          <div class="bolsa-item-precio">${{ (item.price * item.cantidad) | number }}</div>
+        </div>
+      </div>
+
+      <div class="bolsa-footer">
+        <div class="bolsa-total">
+          <span>Total</span>
+          <span>${{ calcularTotal() | number }}</span>
+        </div>
+        <button class="btn-pagar" (click)="procederAlPago()" [disabled]="!carrito?.length">
+          Proceder al pago
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Contacto</h3>
+        <p>Email: contacto [at] milibreria.com</p>
+        <p>Teléfono: +52 55 1234 5678</p>
+      </div>
+      <div class="footer-section">
+        <h3>Ayuda</h3>
+        <a href="#" class="footer-link">Preguntas frecuentes</a>
+        <a href="#" class="footer-link">Envíos y devoluciones</a>
+        <a href="#" class="footer-link">Guía de tallas</a>
+      </div>
+      <div class="footer-section">
+        <h3>Legal</h3>
+        <a href="#" class="footer-link">Términos y condiciones</a>
+        <a href="#" class="footer-link">Política de privacidad</a>
+        <a href="#" class="footer-link">Aviso legal</a>
+      </div>
+      <div class="footer-section">
+        <h3>Síguenos</h3>
+        <div class="social-icons">
+          <a href="#" class="social-icon">Facebook</a>
+          <a href="#" class="social-icon">Instagram</a>
+          <a href="#" class="social-icon">Twitter</a>
+          <a href="#" class="social-icon">TikTok</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2023 Mi Librería. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+</body>
+
+</html>

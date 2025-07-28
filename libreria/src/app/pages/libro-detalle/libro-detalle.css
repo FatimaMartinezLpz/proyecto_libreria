@@ -1,0 +1,272 @@
+.libro-detalle-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.loading,
+.error-message {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+}
+
+.error-message {
+    color: #e74c3c;
+}
+
+.btn-volver {
+    background: rgba(88, 88, 88, 0.373);
+    border: none;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.btn-volver:hover {
+    background: #908e8e;
+}
+
+.libro-header {
+    margin-bottom: 30px;
+}
+
+.libro-header h1 {
+    font-size: 28px;
+    color: var(--color-primary);
+    margin: 10px 0;
+}
+
+.libro-header .autor {
+    font-size: 18px;
+    color: var(--color-text-light);
+}
+
+.libro-main {
+    display: flex;
+    gap: 40px;
+    margin-bottom: 50px;
+}
+
+.libro-imagen-container {
+    flex: 0 0 400px;
+    height: 500px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.libro-imagen {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.libro-info {
+    flex: 1;
+}
+
+.rating {
+    color: var(--color-accent);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rating-text {
+    color: var(--color-text-light);
+    font-size: 14px;
+}
+
+.precio {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 20px 0;
+}
+
+.stock {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.stock.disponible {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.stock.agotado {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.cantidad-container {
+    margin: 25px 0;
+}
+
+.cantidad-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.cantidad-control button {
+    width: 30px;
+    height: 30px;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.cantidad-control button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+
+.cantidad-control span {
+    min-width: 30px;
+    text-align: center;
+}
+
+.btn-agregar {
+    width: 100%;
+    padding: 15px;
+    background: rgb(255, 247, 0);
+    color: black;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.btn-agregar:hover {
+    background: rgb(255, 204, 0);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-agregar:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.descripcion,
+.detalles {
+    margin-bottom: 30px;
+}
+
+.descripcion h3,
+.detalles h3 {
+    font-size: 20px;
+    color: var(--color-primary);
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.descripcion p {
+    line-height: 1.6;
+}
+
+.detalles ul {
+    list-style: none;
+    padding: 0;
+}
+
+.detalles li {
+    margin-bottom: 8px;
+}
+
+.libros-relacionados h2 {
+    font-size: 24px;
+    color: var(--color-primary);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.relacionados-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.libro-card {
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.libro-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.libro-card .libro-imagen-container {
+    height: 250px;
+}
+
+.libro-card .libro-info {
+    padding: 15px;
+}
+
+.libro-card h3 {
+    font-size: 16px;
+    margin: 0 0 5px 0;
+    color: var(--color-primary);
+}
+
+.libro-card .autor {
+    font-size: 14px;
+    color: var(--color-text-light);
+    margin: 0 0 10px 0;
+}
+
+.libro-card .precio {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .libro-main {
+        flex-direction: column;
+    }
+
+    .libro-imagen-container {
+        flex: 0 0 auto;
+        height: 400px;
+    }
+}
+
+@media (max-width: 480px) {
+    .libro-imagen-container {
+        height: 300px;
+    }
+}

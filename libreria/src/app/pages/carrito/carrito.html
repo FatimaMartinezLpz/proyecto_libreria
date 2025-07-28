@@ -1,0 +1,17 @@
+<h2>🛒 Mi carrito</h2>
+
+<div *ngIf="carrito.length === 0">
+  <p>No hay libros en el carrito.</p>
+  <button (click)="volver()">Volver a la tienda</button>
+</div>
+
+<div *ngFor="let libro of carrito; let i = index" class="item-carrito">
+  <img [src]="libro.imagen" alt="Portada" width="80" />
+  <div>
+    <h4>{{ libro.titulo }}</h4>
+    <p>{{ libro.autor }}</p>
+    <p><strong>${{ libro.precio }}</strong></p>
+    <button (click)="eliminarLibro(i)">Eliminar</button>
+  </div>
+</div>
+

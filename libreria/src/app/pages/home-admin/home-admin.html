@@ -1,0 +1,314 @@
+<header class="header-admin fixed-header">
+  <div class="header-content">
+    <div class="logo-admin">
+      <img src="assets/img/logo.png" alt="Logo Mi Librería" class="logo-img">
+      <span class="nav-title">Gestión de Libros</span>
+    </div>
+
+    <div class="user-area">
+      <span class="user-greeting" *ngIf="usuario">
+        ¡Hola, {{usuario.name || 'Usuario'}}!
+      </span>
+
+    </div>
+    <div class="acciones-usuario">
+      <div class="cuenta-container" (click)="$event.stopPropagation()">
+        <button class="usuario-btn glass-btn" (click)="toggleCuenta($event)">
+          <span class="user-avatar">{{usuario?.name?.charAt(0)?.toUpperCase() || 'U'}}</span>
+          <span class="user-name">{{usuario?.name || 'Usuario'}}</span>
+        </button>
+        <div class="cuenta-dropdown glass-dropdown" *ngIf="cuentaAbierta">
+          <div class="cuenta-info">
+            <p class="cuenta-nombre">{{usuario?.name || 'Usuario'}}</p>
+            <p class="cuenta-email">{{usuario?.email || 'No especificado'}}</p>
+          </div>
+          <div class="cuenta-opciones">
+            <button class="dropdown-option" (click)="copiarEmail()">Copiar email</button>
+            <button class="dropdown-option" (click)="abrirReportes()">Reportes</button>
+            <button class="dropdown-option" (click)="abrirGestionUsuarios()">Gestión de Usuarios</button>
+            <button class="btn-cerrar-sesion glass-btn" (click)="cerrarSesion($event)">Cerrar sesión</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="admin-container">
+
+  <!-- Filtros y categorías -->
+  <div class="filtros-container glass-panel">
+    <div class="filtros-content">
+      <button class="filtro-btn" [class.active]="filtroActual === 'todos'" (click)="aplicarFiltro('todos')">
+        Todos
+      </button>
+      <button class="filtro-btn" [class.active]="filtroActual === 'autores'" (click)="aplicarFiltro('autores')">
+        Autores
+      </button>
+      <button class="filtro-btn" [class.active]="filtroActual === 'novedades'" (click)="aplicarFiltro('novedades')">
+        Añadido recientemente
+      </button>
+
+      <div class="buscador-libros">
+        <input type="text" placeholder="Buscar por título o autor..." class="busqueda-input glass-input"
+          [(ngModel)]="terminoBusqueda" (input)="buscarLibros()">
+        <button class="btn-buscar glass-btn" (click)="buscarLibros()">Buscar</button>
+      </div>
+
+      <button class="btn-principal glass-btn" (click)="mostrarFormulario = !mostrarFormulario">
+        <span class="icono">+</span> Agregar Libro
+      </button>
+    </div>
+  </div>
+
+  <!-- Lista de libros -->
+  <div class="lista-libros-container glass-panel">
+    <div class="cabecera-lista">
+      <div class="titulo-col">Título</div>
+      <div class="autor-col">Autor</div>
+      <div class="ejemplares-col">Stock</div>
+      <div class="precio-col">Precio</div>
+      <div class="acciones-col">Acciones</div>
+    </div>
+
+    <!-- Lista normal -->
+    <ng-container *ngIf="filtroActual !== 'autores'">
+      <div class="libro-item" *ngFor="let libro of librosMostrados">
+        <div class="titulo-col">{{libro.title}}</div>
+        <div class="autor-col">{{libro.author}}</div>
+        <div class="ejemplares-col">{{libro.stock}}</div>
+        <div class="precio-col">${{libro.price | number}}</div>
+        <div class="acciones-col">
+          <button class="btn-editar glass-btn" (click)="editarLibro(libro)">✏️</button>
+          <button class="btn-eliminar glass-btn" (click)="eliminarLibro(libro)">🗑️</button>
+          <button class="btn-detalles" (click)="verDetalles(libro)">Ver detalles</button>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Lista agrupada por autores -->
+    <ng-container *ngIf="filtroActual === 'autores'">
+      <div *ngFor="let grupo of librosAgrupadosPorAutor">
+        <div class="grupo-autor">{{grupo.autor}}</div>
+        <div class="libro-item" *ngFor="let libro of grupo.libros">
+          <div class="titulo-col">{{libro.title}}</div>
+          <div class="autor-col">{{libro.author}}</div>
+          <div class="ejemplares-col">{{libro.stock}}</div>
+          <div class="precio-col">${{libro.price | number}}</div>
+          <div class="acciones-col">
+            <button class="btn-editar glass-btn" (click)="editarLibro(libro)">✏️</button>
+            <button class="btn-eliminar glass-btn" (click)="eliminarLibro(libro)">🗑️</button>
+            <button class="btn-detalles" (click)="verDetalles(libro)">Ver detalles</button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Paginación -->
+    <div class="paginacion" *ngIf="librosFiltrados.length > itemsPorPagina">
+      <button class="pagina-btn" [disabled]="paginaActual === 1" (click)="paginaAnterior()">
+        Anterior
+      </button>
+      <span class="pagina-info">Página {{paginaActual}} de {{totalPaginas}}</span>
+      <button class="pagina-btn" [disabled]="paginaActual === totalPaginas" (click)="paginaSiguiente()">
+        Siguiente
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Formulario flotante -->
+<div class="formulario-flotante" *ngIf="mostrarFormulario" [@fadeInOut]>
+  <div class="formulario-contenido glass-form">
+    <div class="form-header">
+      <h2>Nuevo Libro</h2>
+      <button class="btn-cerrar" (click)="mostrarFormulario = false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="form-body">
+      <div class="form-group">
+        <label for="titulo">Título del Libro</label>
+        <input id="titulo" [(ngModel)]="nuevoLibro.title" placeholder="Ej: Cien años de soledad" class="glass-input">
+      </div>
+
+      <div class="form-group">
+        <label for="autor">Autor</label>
+        <input id="autor" [(ngModel)]="nuevoLibro.author" placeholder="Ej: Gabriel García Márquez" class="glass-input">
+      </div>
+
+      <div class="form-group">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" [(ngModel)]="nuevoLibro.description"
+          placeholder="Ingrese una descripción del libro..." class="glass-input" rows="4"></textarea>
+        <small class="form-hint">Breve resumen del contenido del libro</small>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="precio">Precio ($)</label>
+          <input id="precio" type="number" [(ngModel)]="nuevoLibro.price" placeholder="Ej: 19.99" class="glass-input">
+        </div>
+        <div class="form-group">
+          <label for="stock">Stock disponible</label>
+          <input id="stock" type="number" [(ngModel)]="nuevoLibro.stock" placeholder="Ej: 50" class="glass-input">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="categoria">Categoría</label>
+        <input id="categoria" [(ngModel)]="nuevoLibro.category" placeholder="Ej: Novela, Ciencia Ficción, etc."
+          class="glass-input">
+        <small class="form-hint">Género o categoría del libro</small>
+      </div>
+
+      <div class="form-group">
+        <label for="portada">URL de la portada</label>
+        <input id="portada" [(ngModel)]="nuevoLibro.cover_url" placeholder="https://ejemplo.com/portada.jpg"
+          class="glass-input">
+        <small class="form-hint">Enlace a la imagen de portada del libro</small>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button class="btn-cancelar" (click)="cancelarFormulario()">Cancelar</button>
+      <button class="btn-guardar" (click)="guardarCambiosLibro()">
+        {{ libroEnEdicion ? 'Guardar Cambios' : 'Guardar Libro' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de detalles (al final del archivo) -->
+<div class="modal-detalles" *ngIf="libroSeleccionado">
+  <div class="modal-contenido">
+    <button class="btn-cerrar-detalles" (click)="cerrarDetalles()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    <div class="modal-cuerpo">
+      <img [src]="libroSeleccionado.cover_url || 'assets/img/default-book.jpg'" alt="Portada del libro"
+        class="modal-portada">
+      <div class="detalles-texto">
+        <h2>{{libroSeleccionado.title}}</h2>
+        <p><strong>Autor:</strong> {{libroSeleccionado.author}}</p>
+        <p><strong>Categoría:</strong> {{libroSeleccionado.category}}</p>
+        <p><strong>Precio:</strong> ${{libroSeleccionado.price | number}}</p>
+        <p><strong>Stock:</strong> {{libroSeleccionado.stock}}</p>
+        <div class="descripcion-container" *ngIf="libroSeleccionado.description">
+          <h3>Descripción</h3>
+          <p class="descripcion">{{libroSeleccionado.description}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal de reportes -->
+<div class="modal-reportes" *ngIf="mostrarReportes">
+  <div class="modal-contenido">
+    <button class="btn-cerrar-reporte" (click)="cerrarReportes()">×</button>
+    <h2>Reporte de Libros por Género</h2>
+
+    <div class="grafica-container">
+      <canvas #graficaGeneros></canvas>
+    </div>
+
+    <div class="resumen">
+      <p>Total de libros: {{ totalLibros }}</p>
+      <p>Género con más libros: {{ generoMasLibros }}</p>
+    </div>
+  </div>
+</div>
+<!-- Modal de gestión de usuarios (añádelo al final del archivo) -->
+<div class="modal-usuarios" *ngIf="mostrarUsuarios">
+  <div class="modal-contenido">
+    <button class="btn-cerrar" (click)="cerrarGestionUsuarios()">×</button>
+    <h2>Gestión de Usuarios</h2>
+
+    <div class="buscador-usuarios">
+      <input type="text" placeholder="Buscar por nombre o email..." class="busqueda-input glass-input"
+        [(ngModel)]="terminoBusquedaUsuarios" (input)="filtrarUsuarios()">
+    </div>
+
+    <div class="lista-usuarios-container glass-panel">
+      <div class="cabecera-lista">
+        <div class="nombre-col">Nombre</div>
+        <div class="email-col">Email</div>
+        <div class="rol-col">Rol</div>
+        <div class="acciones-col">Acciones</div>
+      </div>
+
+      <div class="usuario-item" *ngFor="let usuario of usuariosFiltrados">
+        <div class="nombre-col">{{usuario.name}}</div>
+        <div class="email-col">{{usuario.email}}</div>
+        <div class="rol-col">{{usuario.role}}</div>
+        <div class="acciones-col">
+          <button class="btn-editar glass-btn" (click)="editarUsuario(usuario)">✏️</button>
+          <button class="btn-eliminar glass-btn" (click)="eliminarUsuario(usuario)">🗑️</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-principal glass-btn" (click)="mostrarFormularioUsuario = true">
+      <span class="icono">+</span> Agregar Usuario
+    </button>
+  </div>
+</div>
+
+<!-- Formulario de usuario -->
+<div class="formulario-flotante" *ngIf="mostrarFormularioUsuario">
+  <div class="formulario-contenido glass-form">
+    <div class="form-header">
+      <h2>{{ usuarioEditando ? 'Editar Usuario' : 'Nuevo Usuario' }}</h2>
+      <button class="btn-cerrar" (click)="cerrarFormularioUsuario()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="form-body">
+      <div class="form-group">
+        <label for="nombre-usuario">Nombre</label>
+        <input id="nombre-usuario" [(ngModel)]="nuevoUsuario.name" class="glass-input" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email-usuario">Email</label>
+        <input id="email-usuario" type="email" [(ngModel)]="nuevoUsuario.email" class="glass-input" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password-usuario">Contraseña</label>
+        <input id="password-usuario" type="password" [(ngModel)]="nuevoUsuario.password" class="glass-input"
+          [required]="!usuarioEditando">
+      </div>
+
+      <div class="form-group">
+        <label for="rol-usuario">Rol</label>
+        <select id="rol-usuario" [(ngModel)]="nuevoUsuario.role" class="glass-input">
+          <option value="admin">Administrador</option>
+          <option value="editor">Editor</option>
+          <option value="user">Usuario</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-footer">
+      <button class="btn-cancelar" (click)="cerrarFormularioUsuario()">Cancelar</button>
+      <button class="btn-guardar" (click)="guardarUsuario()">
+        {{ usuarioEditando ? 'Guardar Cambios' : 'Guardar Usuario' }}
+      </button>
+    </div>
+  </div>
+</div>

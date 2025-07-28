@@ -1,0 +1,14 @@
+# Laravel
+/backend-laravel/vendor/
+/backend-laravel/node_modules/
+/backend-laravel/.env
+
+# Angular
+/frontend-angular/node_modules/
+/frontend-angular/dist/
+
+# IDEs y archivos temporales
+*.log
+.DS_Store
+*.idea
+*.vscode/

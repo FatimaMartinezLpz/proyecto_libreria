@@ -1,0 +1,81 @@
+<div class="libro-detalle-container">
+    <div *ngIf="isLoading" class="loading">Cargando libro...</div>
+
+    <div *ngIf="error" class="error-message">
+        {{ error }}
+        <button (click)="router.navigate(['/home'])" class="btn-volver">Volver al inicio</button>
+    </div>
+
+    <div *ngIf="libro && !isLoading" class="libro-content">
+        <div class="libro-header">
+            <button (click)="router.navigate(['/home'])" class="btn-volver">← Volver</button>
+            <h1>{{ libro.title }}</h1>
+            <p class="autor">por {{ libro.author }}</p>
+        </div>
+
+        <div class="libro-main">
+            <div class="libro-imagen-container">
+                <img [src]="libro.cover_url || 'assets/img/libro-default.jpg'" [alt]="libro.title" class="libro-imagen">
+            </div>
+
+            <div class="libro-info">
+                <div class="rating">
+                    <span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span>
+                    <span class="rating-text">4.0 (120 reseñas)</span>
+                </div>
+
+                <p class="precio">${{ libro.price | number }}</p>
+
+                <div class="stock" [class.disponible]="libro.stock > 0" [class.agotado]="libro.stock <= 0">
+                    {{ libro.stock > 0 ? 'Disponible' : 'Agotado' }}
+                </div>
+
+                <div class="cantidad-container">
+                    <label>Cantidad:</label>
+                    <div class="cantidad-control">
+                        <button (click)="disminuirCantidad()">-</button>
+                        <span>{{ cantidad }}</span>
+                        <button (click)="aumentarCantidad()">+</button>
+                    </div>
+                </div>
+
+                <button class="btn-agregar" (click)="agregarAlCarrito()" [disabled]="libro.stock <= 0">
+                    <span class="icono-carrito">🛒</span> Agregar al carrito
+                </button>
+
+                <div class="descripcion">
+                    <h3>Descripción</h3>
+                    <p>{{ libro.description || 'No hay descripción disponible.' }}</p>
+                </div>
+
+                <div class="detalles">
+                    <h3>Detalles</h3>
+                    <ul>
+                        <li><strong>Categoría:</strong> {{ libro.category }}</li>
+                        <li><strong>Páginas:</strong> 320</li>
+                        <li><strong>Editorial:</strong> Editorial Ejemplo</li>
+                        <li><strong>ISBN:</strong> 978-1234567890</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="librosRelacionados.length > 0" class="libros-relacionados">
+            <h2>Libros relacionados</h2>
+            <div class="relacionados-grid">
+                <div class="libro-card" *ngFor="let libro of librosRelacionados"
+                    (click)="router.navigate(['/libro', libro.id])">
+                    <div class="libro-imagen-container">
+                        <img [src]="libro.cover_url || 'assets/img/libro-default.jpg'" [alt]="libro.title"
+                            class="libro-imagen">
+                    </div>
+                    <div class="libro-info">
+                        <h3>{{ libro.title }}</h3>
+                        <p class="autor">{{ libro.author }}</p>
+                        <p class="precio">${{ libro.price | number }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

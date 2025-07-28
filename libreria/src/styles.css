@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden; /* Oculta el scroll horizontal, pero PERMITE scroll vertical */
+    min-height: 100%;
+}
+
+/* body {
+    background: url('assets/img/img2.jpg') no-repeat center center fixed;
+    background-size: cover;
+} */
+
+/* En tu archivo styles.css */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  
+}
+
+
+
+.badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    background: rgba(43, 146, 255, 0.2);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    color: #2b92ff;
+    font-weight: 500;
+}
+
+/* ===== BOLSA DE COMPRAS ===== */
+.bolsa-flotante {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  width: 400px;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  transition: right 0.3s ease;
+}
+
+.bolsa-flotante.visible {
+  right: 0;
+}
+
+.bolsa-contenido {
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.bolsa-header {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bolsa-titulo {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2a5f8a;
+}
+
+.btn-cerrar-bolsa {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+}
+
+.bolsa-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.envio-gratis {
+  background: #f8f8f8;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 14px;
+  color: #2a5f8a;
+  font-weight: bold;
+}
+
+.bolsa-item {
+  display: flex;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.bolsa-item-img {
+  width: 60px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 15px;
+}
+
+.bolsa-item-info {
+  flex: 1;
+}
+
+.bolsa-item-titulo {
+  font-size: 14px;
+  margin: 0 0 5px 0;
+  color: #333;
+}
+
+.bolsa-item-detalle {
+  font-size: 12px;
+  color: #666;
+  margin: 0 0 5px 0;
+}
+
+.bolsa-item-cantidad {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bolsa-item-cantidad button {
+  background: #f0f0f0;
+  border: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.bolsa-item-cantidad span {
+  font-size: 14px;
+}
+
+.bolsa-item-precio {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.bolsa-footer {
+  padding: 15px;
+  border-top: 1px solid #eee;
+}
+
+.bolsa-total {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.bolsa-total span:last-child {
+  font-weight: bold;
+}
+
+.btn-pagar {
+  width: 100%;
+  padding: 12px;
+  background: #2a5f8a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-pagar:hover {
+  background: #1d4b6f;
+}

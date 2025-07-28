@@ -1,0 +1,100 @@
+<div class="checkout-container">
+    <h2>Finalizar Compra</h2>
+
+    <div class="checkout-steps">
+        <div class="step active">1. Información de Envío</div>
+        <div class="step">2. Método de Pago</div>
+        <div class="step">3. Revisar Pedido</div>
+    </div>
+
+    <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+        <div class="form-section">
+            <h3>Información de Envío</h3>
+
+            <div class="form-group">
+                <label for="fullName">Nombre Completo</label>
+                <input type="text" id="fullName" formControlName="fullName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Dirección</label>
+                <textarea id="address" formControlName="address" rows="3" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="city">Ciudad</label>
+                <input type="text" id="city" formControlName="city" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="state">Estado</label>
+                    <input type="text" id="state" formControlName="state" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="zipCode">Código Postal</label>
+                    <input type="text" id="zipCode" formControlName="zipCode" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>Método de Pago</h3>
+
+            <div class="payment-methods">
+                <label class="payment-method">
+                    <input type="radio" formControlName="paymentMethod" value="tarjeta" checked>
+                    <div class="payment-content">
+                        <span>Tarjeta de Crédito/Débito</span>
+                        <img src="assets/img/credit-cards.png" alt="Tarjetas">
+                    </div>
+                </label>
+
+                <label class="payment-method">
+                    <input type="radio" formControlName="paymentMethod" value="paypal">
+                    <div class="payment-content">
+                        <span>PayPal</span>
+                        <img src="assets/img/paypal.png" alt="PayPal">
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <div class="order-summary">
+            <h3>Resumen del Pedido</h3>
+
+            <div class="order-items">
+                <div class="order-item" *ngFor="let item of cartItems">
+                    <img [src]="item.book.cover_url" [alt]="item.book.title">
+                    <div class="item-details">
+                        <h4>{{ item.book.title }}</h4>
+                        <p>Cantidad: {{ item.quantity }}</p>
+                        <p>Precio: {{ item.book.price * item.quantity | currency }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-total">
+                <div class="total-row">
+                    <span>Subtotal:</span>
+                    <span>{{ calculateSubtotal() | currency }}</span>
+                </div>
+                <div class="total-row">
+                    <span>Envío:</span>
+                    <span>{{ shippingCost === 0 ? 'Gratis' : (shippingCost | currency) }}</span>
+                </div>
+                <div class="total-row grand-total">
+                    <span>Total:</span>
+                    <span>{{ calculateTotal() | currency }}</span>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="checkoutForm.invalid || isProcessing">
+            <span *ngIf="!isProcessing">Confirmar Pedido</span>
+            <span *ngIf="isProcessing">Procesando...</span>
+        </button>
+        <button type="button" class="btn-cancel" (click)="cancelCheckout()">Cancelar</button>
+    </form>
+</div>
