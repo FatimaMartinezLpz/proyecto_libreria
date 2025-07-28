@@ -118,7 +118,4 @@ Esta aplicación está diseñada para brindar una experiencia completa tanto a c
 
 ---
 
-## Contacto
-
-Para más información, dudas o sugerencias, puedes contactarnos en: contacto@milibreria.com
 
