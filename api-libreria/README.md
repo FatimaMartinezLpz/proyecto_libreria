@@ -1,6 +1,6 @@
-# 📚 Proyecto Librería API - Laravel + Sanctum
+# 📚 Proyecto Librería API - Laravel 
 
-Este es el backend de una aplicación de librería desarrollado con **Laravel 10**. Permite gestionar libros, usuarios, carritos de compra, pedidos, y autenticación con roles diferenciados (`admin`, `user`). Se utiliza **Laravel Sanctum** para la autenticación vía tokens, ideal para consumir esta API desde un frontend como Angular.
+Este es el backend de una aplicación de librería desarrollado con **Laravel**. Permite gestionar libros, usuarios, carritos de compra, pedidos, y autenticación con roles diferenciados (`admin`, `user`). Se utiliza **Laravel Sanctum** para la autenticación vía tokens, ideal para consumir esta API desde un frontend como Angular.
 
 ---
 
