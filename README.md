@@ -1,4 +1,4 @@
-## Proyecto Angular: Gestión de Librería
+## P📚 Proyecto Mi Librería - Angular + Laravel
 
 proyecto generado utilizando [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
 
@@ -12,7 +12,39 @@ Guzmán Jiménez Alary
 
 ## Descripción
 
-Esta aplicación web está diseñada para una librería en línea donde usuarios normales (clientes) pueden navegar, buscar y comprar libros fácilmente, y administradores pueden gestionar el catálogo y las operaciones internas. La interfaz es intuitiva, moderna y responsiva para ofrecer la mejor experiencia de usuario.
+Proyecto de aplicación web para una librería en línea, donde usuarios pueden buscar y comprar libros, mientras que administradores gestionan el inventario, usuarios y pedidos. La aplicación está dividida en:
+
+Frontend Angular: Interfaz de usuario interactiva, búsqueda, carrito y checkout.
+
+Backend Laravel: API RESTful para gestión, autenticación y control de datos.
+---
+
+## Estructura del proyecto
+
+![Inicio](src/assets/capturas/inicio.png)
+
+![Inicio](src/assets/capturas/inicio.png)
+
+---
+
+## Frontend Angular
+
+ **Características principales**  
+
+Página principal con carrusel, libros destacados y últimos lanzamientos.
+
+Sistema de búsqueda en tiempo real con filtro por categorías y subcategorías.
+
+Visualización detallada de cada libro con imagen, descripción, stock y precio.
+
+Carrito de compras flotante con gestión de cantidades y total actualizado.
+
+Proceso de checkout con formulario para dirección, método de pago y resumen de compra.
+
+Autenticación y registro de usuarios con validaciones.
+
+Panel de administración para usuarios con rol admin (desde frontend y backend).
+
 
 ---
 
